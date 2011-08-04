@@ -1,0 +1,28 @@
+
+lua-xpath is a simple XPath library to help stay sane while working with XML in Lua
+
+Dependencies
+------------------
+LuaExpat and Lua Object Model (http://matthewwild.co.uk/projects/luaexpat/index.html)
+
+Usage
+--------
+
+local lom = require "lxp.lom"
+local xpath = require "xpath"
+
+local xml = [[
+<root>
+    <node foo="bar">sample text</node>
+    <node>other text</node>
+</root>
+]]
+
+local xml_tree = lom.parse(xml)
+
+local nodes = xpath.selectNodes(xml_tree, '/root/node[@foo="bar"]/text()')
+for _,val in ipairs(nodes) do
+    print(val)
+end
+
+The output will be "sample text"
