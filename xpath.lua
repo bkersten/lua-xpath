@@ -90,6 +90,14 @@ local function eval_predicate(node, expression)
 			val = expr:sub(name_end+1)
 		end
 		
+		if val then
+			local n
+			val,n = string.gsub(val, [[^%s*'([^']*)'%s*$]], "%1") -- trim and remove ' '
+			if n == 0 then 
+				val = string.gsub(val, [[^%s*"([^"]*)"%s*$]], "%1") -- trim and remove " "
+			end
+		end
+
 		if name_start > 0 then
 			-- attribute
 			if name == '*' then
@@ -101,8 +109,6 @@ local function eval_predicate(node, expression)
 				return false
 				
 			elseif val then
-				val = string.gsub(val, "'", "") -- remove '
-				val = string.gsub(val, "\"", "") -- remove "
 				
 				if val ~= node.attr[name] then
 					return false
