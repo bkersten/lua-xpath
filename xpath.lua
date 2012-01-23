@@ -273,15 +273,6 @@ local function select_nodes(xmlTree, query, nodes)
 		return
 	end
 	
-	local first_pos = query:find("/")
-	if first_pos == nil then
-		-- replace nodename with equivelant //nodename/*
-		query = string.format("//%s/*", query)
-	elseif first_pos > 1 and query:find('.') ~=1 then
-		-- replace nodename/something with equivelant //nodename/something (except if starting with self)
-		query = string.format("//%s", query)
-	end
-	
 	query = string.gsub(query, "//", "/ /")
 	
 	local segments = string.split(query, '/')
@@ -350,7 +341,7 @@ local function selectNodes(xml_root, query)
 	for i=1, #queries do
 		local q = queries[i]
 		local tree = xml_root
-		local c = string.char(string.byte(q, 1))
+		local c = q:sub(1,1)
 		--print(c)
 		if c == '/' then
 			-- push xml onto xmlTree so that parseNodes doesn't need a special case for root
